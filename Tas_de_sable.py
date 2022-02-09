@@ -49,4 +49,3 @@ init_terrain()
 
 # boucle principale
 racine.mainloop()
-####chaise
