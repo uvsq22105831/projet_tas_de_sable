@@ -5,115 +5,47 @@
 # Yacine RAFIL
 # https://github.com/uvsq22105831/projet_tas_de_sable
 #########################################
-import numpy as np
+# import des librairies
+
+import tkinter as tk
 
 
-class SandPile:
-    def __init__(self, c, delta):
-        # assert
-        self.delta = np.array(delta)
-        self.c = np.array(c)
-        self.delta_q = self.delta[1:, 1:]
-        self.stable = abs(self.delta_q.diagonal())
-        self.beta = self.delta[0, 1:]
+############################
+# Définition des constantes
 
-    def __eq__(self, other):
-        if isinstance(other, np.array):
-            return (other == self.c).all()
-        elif isinstance(other, SandPile):
-            return (other.c == self.c).all()
-        else:
-            raise TypeError(f'other est un {type(other)}')
+# hauteur du canevas
+HAUTEUR = 600
+# largeur du canevas
+LARGEUR = 600
 
-    def __ne__(self, other):
-        return not self == other
 
-    def __str__(self):
-        return str(self.c)
 
-    def __getitem__(self, item):
-        return self.c[item]
 
-    def __setitem__(self, key, value):
-        self.c[key] = value
+#######################
+# fonctions
 
-    def __and__(self, other):
-        if isinstance(other, np.array):
-            return SandPile(other + self.c, self.delta)
-        elif isinstance(other, SandPile):
-            return SandPile(other.c + self.c, self.delta)
-        else:
-            raise TypeError(f'other est un {type(other)}')
+def init_terrain():
+    """ Initilise le terrain de la manière suivante:
+    * met à 0 la liste appelée terrain à 2D qui contient pour chaque case la 
+    valeur 1 si il y a un mur, et 0 sinon
+    * initialise la liste grille à 2D qui contient l'identifiant
+    du carré dessiné sur le canevas pour chaque case 
+    """
+    pass
 
-    def __iand__(self, other):
-        return self & other
 
-    def __rand__(self, other):
-        return self & other
+#######################
+# programme principal
 
-    def __add__(self, other):
-        res = self & other
-        res.stabilize()
-        return res
+# définition des widgets
+racine = tk.Tk()
+racine.title("Génération de terrain")
+canvas = tk.Canvas(racine, width=LARGEUR, height=HAUTEUR, bg="blue")
 
-    def __iadd__(self, other):
-        return self + other
+# placement des widgets
+canvas.grid(column=0, row=0)
 
-    def __radd__(self, other):
-        return self + other
+init_terrain()
 
-    def __neg__(self):
-        return SandPile(-self.c, self.delta)
-
-    def collapse(self, idx):
-        self.c += self.delta_q[idx]
-
-    def is_stable(self):
-        return all(self.c < self.stable)
-
-    def collapse_all(self):
-        self.c += np.dot((self.c >= self.stable), self.delta_q)
-
-    def stabilize(self):
-        while not self.is_stable():
-            self.collapse_all()
-
-    @property
-    def equivalent(self):
-        """Renvoie le représentant récurrent de la configuration.
-        Utilise l'algorithme thermique"""
-        x0, x1 = self, self + self.beta
-        while x0 != x1:
-            x0, x1 = x1, x0 + self.beta
-        return x0
-
-    def are_equivalent(self, other) -> bool:
-        return self.equivalent == other.equivalent
-
-    @property
-    def weight(self):
-        return self.c.sum()
-
-    @property
-    def neutral(self):
-        e = SandPile(2 * (self.stable - 1), self.delta)
-        e.stabilize()
-        e = -e + 2 * (self.stable - 1)
-        e.stabilize()
-        return e
-
-    def is_recurrent(self):
-        return self == self + self.beta
-
-    def order(self):
-        x0 = self
-        omega = 0
-        x = self + self
-        while x0 != x:
-            omega += 1
-            x += self
-        return omega
-
-    @property
-    def cardinality(self):
-        return np.linalg.det(self.delta_q)
+# boucle principale
+racine.mainloop()
