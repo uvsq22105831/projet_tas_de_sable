@@ -76,5 +76,3 @@ bouton_sable.grid(column=0,row=0)
 # boucle principale
 racine.mainloop()
 
-
-print ("coucou")
