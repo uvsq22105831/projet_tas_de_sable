@@ -21,7 +21,7 @@ LARGEUR = 600
 # taille de la grille
 N = 4
 # choix des couleurs
-COUL_MUR = "grey"
+COUL_MUR = "yellow"
 COUL_VIDE = "white"
 
 P=0.3
