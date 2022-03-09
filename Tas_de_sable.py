@@ -70,11 +70,11 @@ racine.title("Génération de terrain")
 canvas = tk.Canvas(racine, width=LARGEUR, height=HAUTEUR, bg="blue")
 # placement des widgets
 canvas.grid(column=1, row=0)
-bouton_sable =tk.Button(racine,text="chaise",command=init_terrain)
+bouton_sable =tk.Button(racine,text="génération sable",command=init_terrain)
 init_terrain()
 bouton_sable.grid(column=0,row=0)
 # boucle principale
 racine.mainloop()
 
 
-print ("coucou")
+
